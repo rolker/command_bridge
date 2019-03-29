@@ -46,26 +46,23 @@ def processMessage(cmd, args):
     if cmd == 'moos_loiter_updates':
         s = String(args)
         moos_loiter_update_pub.publish(s)
-    if cmd == 'active':
-        if args == 'True':
-            active = Bool(True)
-        else:
-            active = Bool(False) 
-        active_pub.publish(active)
     if cmd == 'mission_plan':
         s = String(args)
         mission_plan_pub.publish(s)
     if cmd == 'helm_mode':
         s = String(args)
         helm_mode_pub.publish(s)
+    if cmd in ('goto_line','start_line','goto','hover'):
+        s = String(cmd+' '+args)
+        mm_comand_pub.publish(s)
 
 rospy.init_node('command_bridge_receiver', anonymous=False)
 
 moos_wpt_update_pub = rospy.Publisher('/moos/wpt_updates',String,queue_size=10)
 moos_loiter_update_pub = rospy.Publisher('/moos/loiter_updates',String,queue_size=10)
-active_pub = rospy.Publisher('/active',Bool,queue_size=10)
 mission_plan_pub = rospy.Publisher('/mission_plan',String,queue_size=10)
 helm_mode_pub = rospy.Publisher('/helm_mode',String,queue_size=10)
+mm_comand_pub = rospy.Publisher('/project11/mission_manager/command',String,queue_size=10)
 
 response_pub =  rospy.Publisher('/project11/response',String,queue_size=10)               
 rospy.Subscriber('/project11/command', String, commandCallback)
