@@ -9,7 +9,12 @@ send_queue = {}
 lock = Lock()
         
 def sendCommandCallback(data):
-    cmd,args = data.data.split(None,1)
+    parts = data.data.split(None,1)
+    cmd = parts[0]
+    if len(parts) > 1:
+        args = parts[1]
+    else:
+        args = None
     ts = datetime.datetime.utcnow().isoformat()
     with lock:
         send_queue[cmd] = (ts,args)
@@ -18,7 +23,9 @@ def update(event):
     with lock:
         for cmd in send_queue:
             s = String()
-            s.data = send_queue[cmd][0]+' '+cmd+' '+send_queue[cmd][1]
+            s.data = send_queue[cmd][0]+' '+cmd
+            if send_queue[cmd][1] is not None:
+                s.data += ' '+send_queue[cmd][1]
             print s
             command_pub.publish(s)
 

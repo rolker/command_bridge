@@ -17,7 +17,12 @@ def sendAck(cmd,ts):
 
 def commandCallback(data):
     #for now: timestamp, command, args
-    ts,cmd,args = data.data.split(None,2)
+    parts = data.data.split(None,2)
+    ts,cmd = parts[:2]
+    if len(parts) > 2:
+        args = parts[2]
+    else:
+        args = None
     if not cmd in last_messages_received or last_messages_received[cmd] != ts:
         # we got a new command
         last_messages_received[cmd] = ts
@@ -52,8 +57,11 @@ def processMessage(cmd, args):
     if cmd == 'helm_mode':
         s = String(args)
         helm_mode_pub.publish(s)
-    if cmd in ('goto_line','start_line','goto','hover'):
-        s = String(cmd+' '+args)
+    if cmd in ('goto_line','start_line','goto','hover','clear_mission'):
+        if args is None:
+            s = String(cmd)
+        else:
+            s = String(cmd+' '+args)
         mm_comand_pub.publish(s)
 
 rospy.init_node('command_bridge_receiver', anonymous=False)
