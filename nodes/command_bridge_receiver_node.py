@@ -32,7 +32,7 @@ def commandCallback(data):
 def processMessage(cmd, args):
     #following should be seperated out into different node
     global emControl
-    print 'processing',cmd,args
+    #print 'processing',cmd,args
     if cmd == 'sonar_control':
         print 'Sonar:',args
         if emControl is None:
@@ -54,14 +54,17 @@ def processMessage(cmd, args):
     if cmd == 'mission_plan':
         s = String(args)
         mission_plan_pub.publish(s)
-    if cmd == 'helm_mode':
+    if cmd == 'piloting_mode':
         s = String(args)
-        helm_mode_pub.publish(s)
+        piloting_mode_pub.publish(s)
     if cmd in ('goto_line','start_line','goto','hover','clear_mission'):
         if args is None:
             s = String(cmd)
         else:
             s = String(cmd+' '+args)
+        mm_comand_pub.publish(s)
+    if cmd == 'mission_manager':
+        s = String(args)
         mm_comand_pub.publish(s)
 
 rospy.init_node('command_bridge_receiver', anonymous=False)
@@ -69,7 +72,7 @@ rospy.init_node('command_bridge_receiver', anonymous=False)
 moos_wpt_update_pub = rospy.Publisher('/moos/wpt_updates',String,queue_size=10)
 moos_loiter_update_pub = rospy.Publisher('/moos/loiter_updates',String,queue_size=10)
 mission_plan_pub = rospy.Publisher('/mission_plan',String,queue_size=10)
-helm_mode_pub = rospy.Publisher('/helm_mode',String,queue_size=10)
+piloting_mode_pub = rospy.Publisher('/project11/piloting_mode',String,queue_size=10)
 mm_comand_pub = rospy.Publisher('/project11/mission_manager/command',String,queue_size=10)
 
 response_pub =  rospy.Publisher('/project11/response',String,queue_size=10)               

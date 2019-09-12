@@ -26,7 +26,7 @@ def update(event):
             s.data = send_queue[cmd][0]+' '+cmd
             if send_queue[cmd][1] is not None:
                 s.data += ' '+send_queue[cmd][1]
-            print s
+            #print s
             command_pub.publish(s)
 
 def responseCallback(data):
