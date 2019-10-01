@@ -45,12 +45,6 @@ def processMessage(cmd, args):
             response = emControl(em_req)
         except rospy.ServiceException as exc:
             print 'error:',str(exc)
-    if cmd == 'moos_wpt_updates':
-        s = String(args)
-        moos_wpt_update_pub.publish(s)
-    if cmd == 'moos_loiter_updates':
-        s = String(args)
-        moos_loiter_update_pub.publish(s)
     if cmd == 'mission_plan':
         s = String(args)
         mission_plan_pub.publish(s)
@@ -69,8 +63,6 @@ def processMessage(cmd, args):
 
 rospy.init_node('command_bridge_receiver', anonymous=False)
 
-moos_wpt_update_pub = rospy.Publisher('/moos/wpt_updates',String,queue_size=10)
-moos_loiter_update_pub = rospy.Publisher('/moos/loiter_updates',String,queue_size=10)
 mission_plan_pub = rospy.Publisher('/mission_plan',String,queue_size=10)
 piloting_mode_pub = rospy.Publisher('/project11/piloting_mode',String,queue_size=10)
 mm_comand_pub = rospy.Publisher('/project11/mission_manager/command',String,queue_size=10)
