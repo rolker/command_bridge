@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+from builtins import str
 import rospy
 from std_msgs.msg import String
 from std_msgs.msg import Bool
@@ -34,7 +36,7 @@ def processMessage(cmd, args):
     global emControl
     #print 'processing',cmd,args
     if cmd == 'sonar_control':
-        print 'Sonar:',args
+        print('Sonar:',args)
         if emControl is None:
             emControl = rospy.ServiceProxy('/sonar/control', EMControl)
         mode,linenum = args.split()
@@ -44,7 +46,7 @@ def processMessage(cmd, args):
         try:
             response = emControl(em_req)
         except rospy.ServiceException as exc:
-            print 'error:',str(exc)
+            print('error:',str(exc))
     if cmd == 'mission_plan':
         s = String(args)
         mission_plan_pub.publish(s)
