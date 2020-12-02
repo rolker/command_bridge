@@ -36,8 +36,8 @@ def responseCallback(data):
             send_queue.pop(cmd,None)
 
 rospy.init_node('command_bridge_sender', anonymous=False)
-command_pub = rospy.Publisher('/udp/command',String,queue_size=10)
+command_pub = rospy.Publisher('/project11/command',String,queue_size=10)
 rospy.Subscriber('/send_command',String,sendCommandCallback)
-rospy.Subscriber('/udp/response',String,responseCallback)
+rospy.Subscriber('/project11/response',String,responseCallback)
 rospy.Timer(rospy.Duration.from_sec(1.0),update)
 rospy.spin()
