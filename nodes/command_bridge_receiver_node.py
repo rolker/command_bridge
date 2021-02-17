@@ -38,7 +38,7 @@ def processMessage(cmd, args):
     if cmd == 'sonar_control':
         print('Sonar:',args)
         if emControl is None:
-            emControl = rospy.ServiceProxy('/sonar/control', EMControl)
+            emControl = rospy.ServiceProxy('sonar/control', EMControl)
         mode,linenum = args.split()
         em_req = EMControlRequest()
         em_req.requested_mode = int(mode)
@@ -65,10 +65,10 @@ def processMessage(cmd, args):
 
 rospy.init_node('command_bridge_receiver', anonymous=False)
 
-mission_plan_pub = rospy.Publisher('/mission_plan',String,queue_size=10)
-piloting_mode_pub = rospy.Publisher('/project11/piloting_mode',String,queue_size=10)
-mm_comand_pub = rospy.Publisher('/project11/mission_manager/command',String,queue_size=10)
+mission_plan_pub = rospy.Publisher('project11/mission_plan',String,queue_size=10)
+piloting_mode_pub = rospy.Publisher('project11/piloting_mode',String,queue_size=10)
+mm_comand_pub = rospy.Publisher('project11/mission_manager/command',String,queue_size=10)
 
-response_pub =  rospy.Publisher('/project11/response',String,queue_size=10)               
-rospy.Subscriber('/project11/command', String, commandCallback)
+response_pub =  rospy.Publisher('project11/response',String,queue_size=10)               
+rospy.Subscriber('project11/command', String, commandCallback)
 rospy.spin()
