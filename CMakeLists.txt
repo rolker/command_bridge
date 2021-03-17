@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8.3)
 project(command_bridge)
 
 find_package(catkin REQUIRED COMPONENTS
-  kongsberg_em_control
   rospy
 )
 
