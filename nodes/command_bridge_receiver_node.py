@@ -1,6 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-from __future__ import print_function
 from builtins import str
 import rospy
 from std_msgs.msg import String
