@@ -4,8 +4,12 @@ from builtins import str
 import rospy
 from std_msgs.msg import String
 from std_msgs.msg import Bool
-from kongsberg_em_control.srv import EMControl
-from kongsberg_em_control.srv import EMControlRequest
+try:
+  from kongsberg_em_control.srv import EMControl
+  from kongsberg_em_control.srv import EMControlRequest
+  have_em_control = True
+except ModuleNotFoundError:
+  have_em_control = False
 
 last_messages_received = {}
 
@@ -34,7 +38,7 @@ def processMessage(cmd, args):
     #following should be seperated out into different node
     global emControl
     #print 'processing',cmd,args
-    if cmd == 'sonar_control':
+    if have_em_control and cmd == 'sonar_control':
         #print('Sonar:',args)
         if emControl is None:
             emControl = rospy.ServiceProxy('sonar/control', EMControl)
